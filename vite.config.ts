@@ -2,6 +2,7 @@
 
 import { defineConfig } from 'vite';
 import analog from '@analogjs/platform';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -12,11 +13,22 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     mainFields: ['module'],
   },
-  plugins: [analog({
-    prerender: {
-      routes: ['/blog/foo-article']
-    }
-  })],
+  plugins: [
+    analog({
+      prerender: {
+        routes: ['/blog/foo-article']
+      }
+    }),
+    viteStaticCopy({
+      structured: true,
+      targets: [
+        {
+          src: 'src/content/posts/**/*.png',
+          dest: ''
+        }
+      ]
+    })    
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
